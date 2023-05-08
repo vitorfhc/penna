@@ -49,6 +49,7 @@ function check_dependencies() {
 function main() {
     local ip=""
     local udp=false
+    local output=""
 
     while getopts ":hufit:" opt; do
         case $opt in
@@ -63,6 +64,9 @@ function main() {
                 ;;
             i)
                 install && exit 0 || exit 1
+                ;;
+            o)
+                output=$OPTARG
                 ;;
             \?)
                 log::error "Invalid option: -$OPTARG"
