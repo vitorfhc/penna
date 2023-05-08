@@ -2,9 +2,12 @@
 
 set -euo pipefail
 
-source libs/log.sh
-source libs/naabu.sh
-source libs/nmap.sh
+script_path=$(realpath $0)
+script_path=$(dirname $script_path)
+
+source $script_path/libs/log.sh
+source $script_path/libs/naabu.sh
+source $script_path/libs/nmap.sh
 
 function usage() {
     echo "Usage: $0 -i <ip>"
