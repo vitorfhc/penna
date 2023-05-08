@@ -15,6 +15,7 @@ function usage() {
     echo "  -t <target> Target IP address to scan"
     echo "  -u          Scan UDP ports"
     echo "  -i          Install this script"
+    echo "  -o          Output directory (default: <ip>)"
     echo "  -h          Show this help message"
     exit 1
 }
@@ -79,22 +80,25 @@ function main() {
 
     log::info "Setting up directories"
     local dir=$ip
-    local nmap_dir=$dir/nmap
-    local naabu_dir=$dir/naabu
-    mkdir -p $nmap_dir $naabu_dir
+
+    if [ ! -z "$output" ]; then
+        dir=$output
+    fi
+
+    mkdir -p $dir
 
     log::info "Starting TCP scanning"
-    naabu::scan_tcp_top_1000 $ip $naabu_dir/tcp-top-1000.txt $nmap_dir/tcp-top-1000.txt && \
+    naabu::scan_tcp_top_1000 $ip $dir/naabu.tcp-top-1000.txt $dir/nmap.tcp-top-1000.txt && \
         log::success "TCP scanning completed successfully" || \
         { log::error "TCP scanning failed" && exit 1; }
     
     if [ "$udp" = true ]; then
         log::info "Starting UDP scanning"
         log::warn "UDP scanning requires root privileges, you may be asked for your password"
-        nmap::scan_udp_top_1000 $ip $nmap_dir/udp-top-1000.txt && \
+        nmap::scan_udp_top_1000 $ip $dir/nmap.udp-top-1000.txt && \
             {
                 log::success "UDP scanning completed successfully"
-                sudo chown -R $(whoami):$(whoami) $dir
+                sudo chown -R $(whoami) $dir
             } || \
             { log::error "UDP scanning failed" && exit 1; }
     fi
