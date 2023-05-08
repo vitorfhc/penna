@@ -29,7 +29,7 @@ function install() {
 }
 
 function check_dependencies() {
-    if ! command -v nmap &> /dev/null
+    if ! nmap::is_installed
     then
         log::error "nmap could not be found"
         exit 1
