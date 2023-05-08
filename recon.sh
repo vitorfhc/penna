@@ -81,14 +81,14 @@ function main() {
     mkdir -p $nmap_dir $naabu_dir
 
     log::info "Starting TCP scanning"
-    naabu::scan_tcp_top_1000 $ip $naabu_dir/top-1000.txt $nmap_dir/top-1000.txt && \
+    naabu::scan_tcp_top_1000 $ip $naabu_dir/tcp-top-1000.txt $nmap_dir/tcp-top-1000.txt && \
         log::success "TCP scanning completed successfully" || \
         { log::error "TCP scanning failed" && exit 1; }
     
     if [ "$udp" = true ]; then
         log::info "Starting UDP scanning"
         log::warn "UDP scanning requires root privileges, you may be asked for your password"
-        nmap::scan_udp_top_1000 $ip $nmap_dir/top-1000.txt && \
+        nmap::scan_udp_top_1000 $ip $nmap_dir/udp-top-1000.txt && \
             {
                 log::success "UDP scanning completed successfully"
                 sudo chown -R $(whoami):$(whoami) $dir
