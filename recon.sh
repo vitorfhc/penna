@@ -98,6 +98,7 @@ function main() {
         nmap::scan_udp_top_1000 $ip $dir/nmap.udp-top-1000.txt && \
             {
                 log::success "UDP scanning completed successfully"
+                log::warn "Changing ownership of $dir to $(whoami), you may be asked for your password"
                 sudo chown -R $(whoami) $dir
             } || \
             { log::error "UDP scanning failed" && exit 1; }
