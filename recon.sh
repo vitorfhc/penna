@@ -51,7 +51,7 @@ function main() {
     local udp=false
     local output=""
 
-    while getopts ":hufit:" opt; do
+    while getopts ":hufit:o:" opt; do
         case $opt in
             h)
                 usage
